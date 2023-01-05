@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'test
+
+  Sample SAM Template for test
+
+  '
+Globals:
+  Function:
+    Timeout: 5
+Resources:
+  TestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: TestFunction
+      Handler: test
+      Runtime: go1.x
+      Architectures:
+      - x86_64
+      Policies:
+      - Statement:
+        - Sid: TestLambdaRole
+          Effect: Allow
+          Action:
+          - sqs:DeleteMessage
+          - sqs:GetQueueAttributes
+          - sqs:ReceiveMessage
+          Resource: '*'
+    Metadata:
+      SamResourceId: TestFunction
+Outputs:
+  TestFunction:
+    Description: First Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - TestFunction
+      - Arn
+  TestFunctionIamRole:
+    Description: Implicit IAM Role created for Test function
+    Value:
+      Fn::GetAtt:
+      - TestFunctionRole
+      - Arn
